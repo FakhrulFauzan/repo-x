@@ -20,10 +20,9 @@ import com.xadmin.usermanagement.model.User;
  *
  */
 public class USerDAO {
-	private String jdbcURL = "jdbc:mysql://ec2-99-81-177-233.eu-west-1.compute.amazonaws.com\n"
-			+ ":3306/detrm7pubsoft1?sslmode=require";
-	private String jdbcUsername = "ktzctbpmkowggq";
-	private String jdbcPassword = "ca4886b2982f404c9fe85a58ad9783c0926a1df36d5dcb4d29e7537befe2f019";
+	private String jdbcURL = "jdbc:mysql://localhost:3306/usersdb";
+	private String jdbcUsername = "root";
+	private String jdbcPassword = "";
 	private String jdbcDriver = "com.mysql.jdbc.Driver";
 
 	private static final String INSERT_USERS_SQL = "INSERT INTO users" + "  (name, email, category) VALUES "
@@ -37,10 +36,19 @@ public class USerDAO {
 	public USerDAO() {
 	}
 
-	protected Connection getConnection() throws SQLException{
-		Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-		System.out.println("Connected to Database.");
-	    return connection;
+	protected Connection getConnection() {
+		Connection connection = null;
+		try {
+			Class.forName(jdbcDriver);
+			connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return connection;
 	}
 
 	public void insertUser(User user) throws SQLException {
